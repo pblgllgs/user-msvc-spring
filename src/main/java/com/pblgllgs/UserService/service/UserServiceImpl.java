@@ -53,4 +53,21 @@ public class UserServiceImpl implements UserService{
                 }).collect(Collectors.toList());
         return userResponses;
     }
+
+    @Override
+    public UserResponse updateUser(long userId, UserRequest userRequest) {
+        User user = userRepository.findUserById(userId);
+        if (user == null){
+            throw new RuntimeException("no existe el usuario");
+        }
+        user = User.builder()
+                .id(userId)
+                .firstName(userRequest.getFirstName())
+                .lastName(userRequest.getLastName())
+                .build();
+        UserResponse userResponse = new UserResponse();
+        BeanUtils.copyProperties(user,userResponse);
+        userRepository.save(user);
+        return userResponse;
+    }
 }
