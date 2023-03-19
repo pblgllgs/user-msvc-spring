@@ -70,4 +70,15 @@ public class UserServiceImpl implements UserService{
         userRepository.save(user);
         return userResponse;
     }
+
+    @Override
+    public Long deleteUser(long userId) {
+        User user = userRepository.findUserById(userId);
+        if (user == null){
+            throw new RuntimeException("no existe el usuario");
+        }
+        long id = userId;
+        userRepository.deleteById(userId);
+        return id;
+    }
 }
